@@ -1,4 +1,3 @@
-import React from 'react';
 import { Course } from '../../Types/types';
 
 const StudentCourseDisplay = ({ course }: { course: Course }) => {

@@ -1,5 +1,4 @@
-import React from "react";
-import { Course } from "../../Types/types";
+import { Course } from "../../../Types/types";
 
 const TeacherCourseDisplay = ({ course }: { course: Course }) => {
   const time = new Date(course.time).toLocaleTimeString([], {
