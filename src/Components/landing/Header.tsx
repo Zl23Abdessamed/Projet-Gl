@@ -1,13 +1,18 @@
 import React, { useState } from "react";
 import logo from "../../assets/logo.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Primary, CEM, Lycee } from "../../Types/constants";
 
 const Header: React.FC = () => {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const toggleMenu = (menu: string) => {
     setActiveMenu((prev) => (prev === menu ? null : menu));
+  };
+
+  const capitalizeFirstLetter = (str: string) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
   const dropdownAnimation = "transition-all duration-300 transform scale-95";
@@ -19,10 +24,11 @@ const Header: React.FC = () => {
           <img src={logo} alt="Logo" className="h-8 w-8" />
           <div className="text-xl text-[#77E0DF] ml-2">Dz Teacher</div>
         </div>
+
         {/* Navigation Buttons with Dropdown Menus */}
         <nav>
           <ul className="flex space-x-16 text-xl text-nowrap">
-            {/* Primary */}
+            {/* Primary Dropdown */}
             <li className="relative">
               <button
                 onClick={() => toggleMenu("primary")}
@@ -42,13 +48,23 @@ const Header: React.FC = () => {
                       key={index}
                       className="p-2 hover:bg-gray-200 font-light"
                     >
-                      <a href={`#primaire-${index + 1}`}>{level}</a>
+                      <button
+                        onClick={() =>
+                          navigate(
+                            `/subjects/primary/${encodeURIComponent(level)}`
+                          )
+                        }
+                        className="w-full text-left"
+                      >
+                        {capitalizeFirstLetter(level)} année
+                      </button>
                     </li>
                   ))}
                 </ul>
               )}
             </li>
-            {/* CEM */}
+
+            {/* CEM Dropdown */}
             <li className="relative">
               <button
                 onClick={() => toggleMenu("cem")}
@@ -68,13 +84,21 @@ const Header: React.FC = () => {
                       key={index}
                       className="p-2 hover:bg-gray-200 font-light"
                     >
-                      <a href={`#college-${index + 1}`}>{level}</a>
+                      <button
+                        onClick={() =>
+                          navigate(`/subjects/cem/${encodeURIComponent(level)}`)
+                        }
+                        className="w-full text-left"
+                      >
+                        {capitalizeFirstLetter(level)} année
+                      </button>
                     </li>
                   ))}
                 </ul>
               )}
             </li>
-            {/* Lycee */}
+
+            {/* Lycee Dropdown */}
             <li className="relative">
               <button
                 onClick={() => toggleMenu("lycee")}
@@ -94,7 +118,16 @@ const Header: React.FC = () => {
                       key={index}
                       className="p-2 hover:bg-gray-200 font-light"
                     >
-                      <a href={`#lycee-${index + 1}`}>{level}</a>
+                      <button
+                        onClick={() =>
+                          navigate(
+                            `/subjects/lycee/${encodeURIComponent(level)}`
+                          )
+                        }
+                        className="w-full text-left"
+                      >
+                        {capitalizeFirstLetter(level)} année
+                      </button>
                     </li>
                   ))}
                 </ul>
@@ -102,13 +135,15 @@ const Header: React.FC = () => {
             </li>
           </ul>
         </nav>
+
         {/* Login Button */}
         <div>
-          <button className="bg-light text-white text-xl mr-4 ml-52 px-8 py-1 rounded-xl hover:bg-gray-200 hover:text-light">
-            <Link to={"/auth/signin"} className="w-full h-full">
-              Login
-            </Link>
-          </button>
+          <Link
+            to="/auth/signin"
+            className="bg-light text-white text-xl mr-4 ml-52 px-8 py-1 rounded-xl hover:bg-gray-200 hover:text-light"
+          >
+            Login
+          </Link>
         </div>
       </div>
     </header>

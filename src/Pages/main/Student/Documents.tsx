@@ -9,34 +9,33 @@ const Documents = () => {
   const [cookies] = useCookies(['token']);
   const [documents, setDocuments] = useState<LightDocument[] | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  // Fake data for later use
-  // const fixedDocuments: LightDocument[] = [
-  //   {
-  //     id: "00",
-  //     senderName: "Mr Azouaou",
-  //     subject: "Gl",
-  //   },
-  //   {
-  //     id: "01",
-  //     senderName: "Mr Azouaou",
-  //     subject: "Gl",
-  //   },
-  //   {
-  //     id: "02",
-  //     senderName: "Mr Azouaou",
-  //     subject: "Gl",
-  //   },
-  // ];
+  const fixedDocuments: LightDocument[] = [
+    {
+      id: "00",
+      senderName: "Mr Azouaou",
+      subject: "Gl",
+    },
+    {
+      id: "01",
+      senderName: "Mr Azouaou",
+      subject: "Gl",
+    },
+    {
+      id: "02",
+      senderName: "Mr Azouaou",
+      subject: "Gl",
+    },
+  ];
 
   useEffect(() => {
     const fetchDocuments = async () => {
       try {
         const data = await getStudentDocuments(cookies.token);
         setDocuments(data);
-      } catch (err) {
-        setError("Failed to fetch documents. Please try again later.");
+      } catch {
+        // Fallback to the fixed documents in case of an error
+        setDocuments(fixedDocuments);
       } finally {
         setLoading(false);
       }
@@ -45,7 +44,8 @@ const Documents = () => {
     if (cookies.token) {
       fetchDocuments();
     } else {
-      setError("No authentication token found");
+      // Fallback to the fixed documents if no token is found
+      setDocuments(fixedDocuments);
       setLoading(false);
     }
   }, [cookies.token]);
@@ -58,8 +58,6 @@ const Documents = () => {
       <div className="w-full flex flex-col items-center gap-4">
         {loading ? (
           <p>Loading...</p>
-        ) : error ? (
-          <p className="text-red-500">{error}</p>
         ) : documents ? (
           documents.map((doc) => <LightDocumentDisplay doc={doc} key={doc.id} />)
         ) : (

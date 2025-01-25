@@ -1,36 +1,14 @@
 import { Route, Routes } from "react-router-dom";
-import { UserType } from "../../Types/constants";
-import Documents from "../../Pages/main/Student/Documents";
-import SingleTeacherDocuments from "../../Pages/main/Student/SingleTeacherDocuments";
-import StudentPayments from "../../Pages/main/Student/StudentPayments";
-import TeacherPayments from "../../Pages/main/Teacher/TeacherPayments";
-import TeacherDocuments from "../../Pages/main/Teacher/TeacherDocuments";
-import TeacherCourses from "../../Pages/main/Teacher/TeacherCourses";
-import Courses from "../../Pages/main/Student/Courses";
-import TeacherProfile from "../../Pages/main/Teacher/TeacherProfile";
-import { useState } from "react";
+import StudentPagesWrapper from "../../Pages/main/Student/StudentPagesWrapper";
+import TeacherPagesWrapper from "../../Pages/main/Teacher/TeacherPagesWrapper";
 
 const MainRoutesWrapper = () => {
-  const [Role] = useState<UserType>(UserType.teacher);
 
   return (
     <div className="flex-grow">
       <Routes>
-        {Role === UserType.teacher ? (
-          <>
-            <Route path="documents" element={<TeacherDocuments />} />
-            <Route path="payments" element={<TeacherPayments />} />
-            <Route path="courses" element={<TeacherCourses />} />
-            <Route path="profile" element={<TeacherProfile />} />
-          </>
-        ) : (
-          <>
-            <Route path="documents" element={<Documents />} />
-            <Route path="documents/:id" element={<SingleTeacherDocuments />} />
-            <Route path="payments" element={<StudentPayments />} />
-            <Route path="courses" element={<Courses />} />
-          </>
-        )}
+        <Route path="student/*" element={<StudentPagesWrapper />} />
+        <Route path="teacher/*" element={<TeacherPagesWrapper />} />
       </Routes>
     </div>
   );

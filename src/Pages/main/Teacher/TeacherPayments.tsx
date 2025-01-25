@@ -3,9 +3,6 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import MainPagesWrapper from "../../../Components/main/MainPagesWrapper";
 import StudentsDisplayTable from "../../../Components/main/Teacher/StudentsDisplayTable";
 import AddStudentModal from "../../../Components/main/Modals/AddStudentModal";
-import { useEffect } from "react";
-import { useCookies } from "react-cookie";
-import { getTeacherStudents } from "../../../utils/fetchfuncs";
 
 const months = [
   "Janvier",
@@ -34,98 +31,98 @@ const subjects = [
 
 const Level = ["Primary", "Cem", "Lycee", "Tous"];
 
-// const initialStudents = [
-//   {
-//     id: "1",
-//     lastName: "Ahmed",
-//     firstName: "Drouhi",
-//     month: "Janvier",
-//     subject: "Mathématiques",
-//     level: "Primary",
-//     status: "Payé",
-//   },
-//   {
-//     id: "2",
-//     lastName: "Mounir",
-//     firstName: "Floubi",
-//     month: "Février",
-//     subject: "Physique",
-//     level: "Cem",
-//     status: "Non payé",
-//   },
-//   {
-//     id: "3",
-//     lastName: "Knhss",
-//     firstName: "Lamka",
-//     month: "Mars",
-//     subject: "Chimie",
-//     level: "Lycee",
-//     status: "Non payé",
-//   },
-//   {
-//     id: "4",
-//     lastName: "Sbnvh",
-//     firstName: "Cgshn",
-//     month: "Avril",
-//     subject: "Biologie",
-//     level: "Primary",
-//     status: "Payé",
-//   },
-//   {
-//     id: "5",
-//     lastName: "Ctreye",
-//     firstName: "Youo",
-//     month: "Mai",
-//     subject: "Histoire",
-//     level: "Cem",
-//     status: "Non payé",
-//   },
-//   {
-//     id: "6",
-//     lastName: "Bvcyt",
-//     firstName: "Lino",
-//     month: "Juin",
-//     subject: "Mathématiques",
-//     level: "Lycee",
-//     status: "Payé",
-//   },
-//   {
-//     id: "7",
-//     lastName: "Ait",
-//     firstName: "Salah",
-//     month: "Juillet",
-//     subject: "Physique",
-//     level: "Primary",
-//     status: "Non payé",
-//   },
-//   {
-//     id: "8",
-//     lastName: "Ben",
-//     firstName: "Omar",
-//     month: "Août",
-//     subject: "Chimie",
-//     level: "Cem",
-//     status: "Payé",
-//   },
-//   {
-//     id: "9",
-//     lastName: "Zidane",
-//     firstName: "Mehdi",
-//     month: "Septembre",
-//     subject: "Biologie",
-//     level: "Lycee",
-//     status: "Non payé",
-//   },
-//   {
-//     id: "10",
-//     lastName: "El",
-//     firstName: "Kheir",
-//     month: "Octobre",
-//     subject: "Histoire",
-//     level: "Primary",
-//     status: "Payé",
-//   },
-// ];
+const initialStudents = [
+  {
+    id: "1",
+    lastName: "Ahmed",
+    firstName: "Drouhi",
+    month: "Janvier",
+    subject: "Mathématiques",
+    level: "Primary",
+    status: "Payé",
+  },
+  {
+    id: "2",
+    lastName: "Mounir",
+    firstName: "Floubi",
+    month: "Février",
+    subject: "Physique",
+    level: "Cem",
+    status: "Non payé",
+  },
+  {
+    id: "3",
+    lastName: "Knhss",
+    firstName: "Lamka",
+    month: "Mars",
+    subject: "Chimie",
+    level: "Lycee",
+    status: "Non payé",
+  },
+  {
+    id: "4",
+    lastName: "Sbnvh",
+    firstName: "Cgshn",
+    month: "Avril",
+    subject: "Biologie",
+    level: "Primary",
+    status: "Payé",
+  },
+  {
+    id: "5",
+    lastName: "Ctreye",
+    firstName: "Youo",
+    month: "Mai",
+    subject: "Histoire",
+    level: "Cem",
+    status: "Non payé",
+  },
+  {
+    id: "6",
+    lastName: "Bvcyt",
+    firstName: "Lino",
+    month: "Juin",
+    subject: "Mathématiques",
+    level: "Lycee",
+    status: "Payé",
+  },
+  {
+    id: "7",
+    lastName: "Ait",
+    firstName: "Salah",
+    month: "Juillet",
+    subject: "Physique",
+    level: "Primary",
+    status: "Non payé",
+  },
+  {
+    id: "8",
+    lastName: "Ben",
+    firstName: "Omar",
+    month: "Août",
+    subject: "Chimie",
+    level: "Cem",
+    status: "Payé",
+  },
+  {
+    id: "9",
+    lastName: "Zidane",
+    firstName: "Mehdi",
+    month: "Septembre",
+    subject: "Biologie",
+    level: "Lycee",
+    status: "Non payé",
+  },
+  {
+    id: "10",
+    lastName: "El",
+    firstName: "Kheir",
+    month: "Octobre",
+    subject: "Histoire",
+    level: "Primary",
+    status: "Payé",
+  },
+];
 
 const Dropdown = ({
   title,
@@ -178,35 +175,11 @@ const Dropdown = ({
 };
 
 const TeacherPayments = () => {
-  const [cookies] = useCookies(["token"]);
   const [selectedMonth, setSelectedMonth] = useState("Tous");
   const [selectedSubject, setSelectedSubject] = useState("Tous");
   const [selectedLevel, setSelectedLevel] = useState("Tous");
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [students, setStudents] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchStudents = async () => {
-      try {
-        if (!cookies.token) {
-          setError("Authentication required");
-          setLoading(false);
-          return;
-        }
-
-        const data = await getTeacherStudents(cookies.token);
-        setStudents(data);
-      } catch (err) {
-        setError("Failed to load students");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchStudents();
-  }, [cookies.token]);
+  const [students, setStudents] = useState<any[]>(initialStudents);
 
   const filterStudents = () => {
     return students.filter((student) => {
@@ -227,15 +200,12 @@ const TeacherPayments = () => {
   const filteredStudents = filterStudents();
 
   const handleAddStudent = async (newStudent: any) => {
-    try {
-      // Add your API call for creating new student here
-      console.log("Adding new student:", newStudent);
-      // After successful add, refetch students
-      const data = await getTeacherStudents(cookies.token);
-      setStudents(data);
-    } catch (err) {
-      console.error("Failed to add student:", err);
-    }
+    // Simulate adding a new student
+    const updatedStudents = [
+      ...students,
+      { ...newStudent, id: String(students.length + 1) },
+    ];
+    setStudents(updatedStudents);
   };
 
   return (
@@ -272,20 +242,14 @@ const TeacherPayments = () => {
             Ajouter un nouveau étudiant
           </button>
 
-          {loading ? (
-            <p>Chargement des étudiants...</p>
-          ) : error ? (
-            <p className="text-red-500">{error}</p>
-          ) : (
-            <StudentsDisplayTable students={filteredStudents} />
-          )}
+          <StudentsDisplayTable students={filteredStudents} />
         </div>
       </div>
 
       <AddStudentModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
-        onApply={() => handleAddStudent}
+        onApply={handleAddStudent}
       />
     </MainPagesWrapper>
   );

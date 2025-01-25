@@ -12,7 +12,10 @@ const LandingPage = () => {
       <Routes>
         <Route path="/" element={<LandingPageMainBody />} />
         <Route path="/search" element={<LandingPageSearchPage />} />
-        <Route path="/levels" element={<LandidngPageSubjectsPage />} />
+        <Route
+          path="/subjects/:category/:level?"
+          element={<LandidngPageSubjectsPage />}
+        />
       </Routes>
       <Footer />
     </div>

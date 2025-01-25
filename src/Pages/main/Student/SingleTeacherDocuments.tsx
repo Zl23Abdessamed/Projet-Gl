@@ -5,7 +5,6 @@ import DocumentDisplay from "../../../Components/main/DocumentDisplay";
 import LightDocumentDisplay from "../../../Components/main/LightDocumentDisplay";
 import MainPagesWrapper from "../../../Components/main/MainPagesWrapper";
 import { Document, LightDocument } from "../../../Types/types";
-import { getStudentDocumentById } from "../../../utils/fetchfuncs";
 
 const SingleTeacherDocuments = () => {
   const [cookies] = useCookies(['token']);
@@ -13,9 +12,8 @@ const SingleTeacherDocuments = () => {
   const documentId = searchParams.get("id");
   const [document, setDocument] = useState<Document | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  // Fake data for later use
+  // Fake data for fallback use
   const fakeFile = new File(["content"], "example.txt", { type: "text/plain" });
 
   const fakeDocuments: Document[] = [
@@ -43,17 +41,18 @@ const SingleTeacherDocuments = () => {
 
   useEffect(() => {
     if (!documentId) {
-      setError("No document ID provided in the URL.");
+      setDocument(null); // Fallback to no specific document if no ID is provided
       setLoading(false);
       return;
     }
 
     const fetchDocument = async () => {
       try {
-        const data = await getStudentDocumentById(documentId, cookies.token);
-        setDocument(data);
-      } catch (err) {
-        setError("Failed to fetch document. Please try again later.");
+        // Simulate fetching with fake data
+        const doc = fakeDocuments.find((doc) => doc.id === documentId) || null;
+        setDocument(doc);
+      } catch {
+        setDocument(null);
       } finally {
         setLoading(false);
       }
@@ -62,7 +61,7 @@ const SingleTeacherDocuments = () => {
     if (cookies.token) {
       fetchDocument();
     } else {
-      setError("No authentication token found");
+      setDocument(null); // Fallback to no specific document if no token
       setLoading(false);
     }
   }, [documentId, cookies.token]);
@@ -78,8 +77,6 @@ const SingleTeacherDocuments = () => {
         <div className="flex justify-center items-center">
           {loading ? (
             <p>Loading...</p>
-          ) : error ? (
-            <p className="text-red-500">{error}</p>
           ) : lightDoc ? (
             <LightDocumentDisplay doc={lightDoc} />
           ) : (

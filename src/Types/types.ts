@@ -21,7 +21,7 @@ export interface LoginUser {
 }
 
 export interface Subjects {
-  name: SubjectNames;
+  name: keyof typeof SubjectNames;
   coeff: number;
 }
 
@@ -43,10 +43,10 @@ export interface Teacher {
   tarifs: string[];
   contacts: {
     phone: string;
-    email: string
+    email: string;
   };
-  imageUrl? : string;
-};
+  imageUrl?: string;
+}
 
 export interface Document extends LightDocument {
   title: string;

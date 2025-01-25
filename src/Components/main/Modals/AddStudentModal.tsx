@@ -1,12 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
+
+export interface Student {
+  id: string;
+  lastName: string;
+  firstName: string;
+  status: string; // "Payé" or "Non payé"
+}
 
 interface AddModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onApply: () => void;
+  onApply: (student: Student) => void;
 }
 
 const AddModal: React.FC<AddModalProps> = ({ isOpen, onClose, onApply }) => {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const newStudent: Student = {
+      id: Date.now().toString(), // Simple ID generation
+      firstName,
+      lastName,
+      status: "Non payé", // Default status
+    };
+
+    onApply(newStudent);
+    // Reset form and close
+    setFirstName("");
+    setLastName("");
+    onClose();
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -15,17 +42,19 @@ const AddModal: React.FC<AddModalProps> = ({ isOpen, onClose, onApply }) => {
         <h2 className="mb-4 text-lg underline text-center text-main-color">
           Entrer les informations de l’étudiant :
         </h2>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="flex gap-x-4">
-            {" "}
             <div className="gap-x-3 mb-4 flex">
               <label className="leading-[2.5] text-main-color text-lg">
                 Prenom:
               </label>
               <input
-                className="block w-full mt-1  p-2 bg-[#B6D6CFA6]"
+                className="block w-full mt-1 p-2 bg-[#B6D6CFA6]"
                 type="text"
                 placeholder="Prenom.."
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                required
               />
             </div>
             <div className="gap-x-3 mb-4 flex ml-[15px]">
@@ -36,29 +65,9 @@ const AddModal: React.FC<AddModalProps> = ({ isOpen, onClose, onApply }) => {
                 className="block w-full mt-1 p-2 ml-[6px] bg-[#B6D6CFA6]"
                 type="text"
                 placeholder="Nom.."
-              />
-            </div>
-          </div>
-
-          <div className="flex gap-x-4">
-            <div className="gap-x-3 mb-4 flex">
-              <label className="leading-[2.5] text-main-color text-lg">
-                Niveau:
-              </label>
-              <input
-                className="block w-full mt-1 p-2 ml-[9px] bg-[#B6D6CFA6]"
-                type="text"
-                placeholder="Niveau.."
-              />
-            </div>
-            <div className="gap-x-3 mb-4 flex">
-              <label className="leading-[2.5] text-main-color text-lg">
-                Matière:
-              </label>
-              <input
-                className="block w-full mt-1 p-2 bg-[#B6D6CFA6]"
-                type="text"
-                placeholder="Matière.."
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                required
               />
             </div>
           </div>
@@ -72,9 +81,8 @@ const AddModal: React.FC<AddModalProps> = ({ isOpen, onClose, onApply }) => {
               Annuler
             </button>
             <button
-              type="button"
+              type="submit"
               className="px-4 py-2 bg-ternary-extra-light-color text-white rounded"
-              onClick={onApply}
             >
               Appliquer
             </button>

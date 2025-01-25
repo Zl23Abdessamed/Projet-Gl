@@ -1,3 +1,4 @@
+import { SubjectNames } from "../../Types/constants";
 import { Subjects } from "../../Types/types";
 
 const SubjectCard = ({ props }: { props: Subjects }) => {
@@ -9,7 +10,7 @@ const SubjectCard = ({ props }: { props: Subjects }) => {
         hover:bg-ternary-color hover:text-white focus:outline-none
         focus:ring-2 focus:ring-ternary-color focus:ring-offset-2"
       >
-        {props.name}
+        {SubjectNames[props.name]}
       </button>
       <div className="bg-ternary-extra-light-color text-white rounded-xl px-3 py-1">
         <p className="text-sm font-medium">Coeff : {props.coeff}</p>

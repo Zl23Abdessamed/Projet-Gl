@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Course } from "../../Types/types";
-import StudentCourseDisplay from "./Teacher/StudentCourseDisplay";
 import {
   MdOutlineKeyboardArrowRight,
   MdOutlineKeyboardArrowLeft,
 } from "react-icons/md";
+import TeacherCourseDisplay from "./Student/TeacherCourseDisplay";
 
 interface StudentCoursesCalendarProps {
   courses: Course[];
@@ -115,7 +115,7 @@ const StudentCoursesCalendar: React.FC<StudentCoursesCalendarProps> = ({
                 <div className="flex flex-col flex-wrap gap-4 justify-center">
                   {coursesByDate[date.toLocaleDateString("fr-CA")]?.map(
                     (course) => (
-                      <StudentCourseDisplay key={course.id} course={course} />
+                      <TeacherCourseDisplay key={course.id} course={course} />
                     )
                   ) || (
                     <p className="text-gray-400 text-center">Pas de Cours</p>

@@ -5,6 +5,7 @@ import MainPagesWrapper from "../../../Components/main/MainPagesWrapper";
 import { StudentPayment } from "../../../Types/types";
 import StudentsPaymentsDisplayTable from "../../../Components/main/Student/StudentsPaymentsDisplayTable";
 import { getStudentPayments } from "../../../utils/fetchfuncs";
+import { PaymentStatus } from "../../../Types/constants";
 
 const months = [
   "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", 
@@ -16,11 +17,38 @@ const subjects = [
 ];
 
 const teachers = [
-  { id: 1, teacherName: "Mme Dupont" },
-  { id: 2, teacherName: "M. Durand" },
-  { id: 3, teacherName: "Mme Lefevre" },
-  { id: 4, teacherName: "M. Bernard" },
-  { id: 5, teacherName: "Tous" }
+  { id: "1", teacherName: "Mme Dupont" },
+  { id: "2", teacherName: "M. Durand" },
+  { id: "3", teacherName: "Mme Lefevre" },
+  { id: "4", teacherName: "M. Bernard" },
+  { id: "5", teacherName: "Tous" }
+];
+
+const mockPayments: StudentPayment[] = [
+  {
+    id: "1",
+    month: "Janvier",
+    subject: "Mathématiques",
+    teacherId: "1",
+    teacherName: "Mme Dupont",
+    paymentStatus: PaymentStatus.Payed
+  },
+  {
+    id: "2",
+    month: "Février", 
+    subject: "Physique",
+    teacherId: "2",
+    teacherName: "M. Durand",
+    paymentStatus: PaymentStatus.pending
+  },
+  {
+    id: "3",
+    month: "Mars",
+    subject: "Chimie", 
+    teacherId: "3",
+    teacherName: "Mme Lefevre",
+    paymentStatus: PaymentStatus.Payed
+  }
 ];
 
 export const Dropdown = ({
@@ -78,7 +106,6 @@ const StudentPayments = () => {
   const [selectedTeacher, setSelectedTeacher] = useState("Tous");
   const [payments, setPayments] = useState<StudentPayment[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchPayments = async () => {
@@ -86,7 +113,7 @@ const StudentPayments = () => {
         const data = await getStudentPayments(cookies.token);
         setPayments(data);
       } catch (err) {
-        setError("Failed to fetch payments. Please try again later.");
+        setPayments(mockPayments);
       } finally {
         setLoading(false);
       }
@@ -95,7 +122,7 @@ const StudentPayments = () => {
     if (cookies.token) {
       fetchPayments();
     } else {
-      setError("No authentication token found");
+      setPayments(mockPayments);
       setLoading(false);
     }
   }, [cookies.token]);
@@ -138,9 +165,7 @@ const StudentPayments = () => {
         </div>
         <div className="w-1/2 flex justify-center items-center">
           {loading ? (
-            <p>Loading...</p>
-          ) : error ? (
-            <p className="text-red-500">{error}</p>
+            <p>Chargement...</p>
           ) : (
             <StudentsPaymentsDisplayTable payments={filteredPayments} />
           )}
