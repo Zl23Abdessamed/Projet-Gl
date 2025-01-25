@@ -117,8 +117,7 @@ const StudentDisplayTable: React.FC<StudentDisplayTableProps> = ({
       <DeleteModal
         isOpen={isDeleteModalOpen}
         onClose={handleCloseDelete}
-        onConfirm={handleConfirmDelete}
-      />
+        onConfirm={handleConfirmDelete} type={"course"}      />
     </>
   );
 };

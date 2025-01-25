@@ -11,7 +11,7 @@ import TeacherProfile from "../../Pages/main/Teacher/TeacherProfile";
 import { useState } from "react";
 
 const MainRoutesWrapper = () => {
-  const [Role, SetRole] = useState<UserType>(UserType.teacher);
+  const [Role] = useState<UserType>(UserType.teacher);
 
   return (
     <div className="flex-grow">

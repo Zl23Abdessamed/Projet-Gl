@@ -66,7 +66,7 @@ const profile = {
 
 const Sidebar = () => {
   const location = useLocation();
-  const [Role, SetRole] = useState(UserType.teacher);
+  const [Role] = useState(UserType.teacher);
 
   return (
     <div className="flex flex-col bg-ternary-extra-light-color w-80">

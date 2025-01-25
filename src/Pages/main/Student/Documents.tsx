@@ -12,23 +12,23 @@ const Documents = () => {
   const [error, setError] = useState<string | null>(null);
 
   // Fake data for later use
-  const fixedDocuments: LightDocument[] = [
-    {
-      id: "00",
-      senderName: "Mr Azouaou",
-      subject: "Gl",
-    },
-    {
-      id: "01",
-      senderName: "Mr Azouaou",
-      subject: "Gl",
-    },
-    {
-      id: "02",
-      senderName: "Mr Azouaou",
-      subject: "Gl",
-    },
-  ];
+  // const fixedDocuments: LightDocument[] = [
+  //   {
+  //     id: "00",
+  //     senderName: "Mr Azouaou",
+  //     subject: "Gl",
+  //   },
+  //   {
+  //     id: "01",
+  //     senderName: "Mr Azouaou",
+  //     subject: "Gl",
+  //   },
+  //   {
+  //     id: "02",
+  //     senderName: "Mr Azouaou",
+  //     subject: "Gl",
+  //   },
+  // ];
 
   useEffect(() => {
     const fetchDocuments = async () => {

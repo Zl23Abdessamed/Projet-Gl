@@ -6,7 +6,6 @@ import {
   Course,
   StudentPayment,
   Document,
-  LightDocument,
 } from "../Types/types";
 
 const API_URL = ""; // Replace with actual base URL

@@ -285,7 +285,7 @@ const TeacherPayments = () => {
       <AddStudentModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
-        onApply={handleAddStudent}
+        onApply={() => handleAddStudent}
       />
     </MainPagesWrapper>
   );
